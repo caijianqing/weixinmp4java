@@ -1,6 +1,17 @@
 *.class
+.metadata
+.svn
+.settings
+*classes
+
+bin
+
+MailTest2.java
 
 # Package Files #
-*.jar
 *.war
 *.ear
+*.classpath
+*.project
+*.checkstyle
+*.classpath

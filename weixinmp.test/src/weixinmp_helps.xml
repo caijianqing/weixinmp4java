@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<helps>
+
+	<help>
+		<title>欢迎关注</title>
+		<content> 
+           <![CDATA[
+欢迎关注！搜索
+            ]]>
+		</content>
+	</help>
+
+	<help>
+		<title>接收到文本消息</title>
+		<content> 
+           <![CDATA[掐指一算，你说的“%str%” 有%length%个字！]]>
+		</content>
+	</help>
+
+	<help>
+		<title>系统出错</title>
+		<content> 
+           <![CDATA[系统繁忙，请重试。]]>
+		</content>
+	</help>
+
+	<help>
+		<title>开发者账号不正确</title>
+		<content> 
+           <![CDATA[系统繁忙，请重试。]]>
+		</content>
+	</help>
+
+	<help>
+		<title>签名不正确</title>
+		<content> 
+           <![CDATA[系统繁忙，请重试。]]>
+		</content>
+	</help>
+
+	<help>
+		<title>没有回复</title>
+		<content> 
+           <![CDATA[暂时不能处理这个请求。]]>
+		</content>
+	</help>
+
+
+</helps> 
