@@ -56,6 +56,7 @@ public class MediaLibraryService {
     /**
      * 下载一个文件
      * @param mediaId 媒体ID
+     * @param filenameSuffix 文件名后缀
      * @return 以文件的形式返回
      * @return WeixinException 如发生错误
      */

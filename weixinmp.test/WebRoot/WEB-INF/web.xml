@@ -4,11 +4,11 @@
     <listener-class>cjc.weixinmp.test.Engine</listener-class>
   </listener>
   <servlet>
-    <servlet-name>WeixinmpServlet</servlet-name>
-    <servlet-class>cjc.weixinmp.test.WeixinmpServlet</servlet-class>
+    <servlet-name>WeixinmpAccessServlet</servlet-name>
+    <servlet-class>cjc.weixinmp.test.WeixinmpAccessServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>WeixinmpServlet</servlet-name>
+    <servlet-name>WeixinmpAccessServlet</servlet-name>
     <url-pattern>/weixinmpapi</url-pattern>
   </servlet-mapping>
   <servlet>

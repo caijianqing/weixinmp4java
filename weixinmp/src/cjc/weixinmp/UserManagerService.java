@@ -8,7 +8,7 @@ import cjc.weixinmp.bean.GroupInfo;
 import cjc.weixinmp.bean.GroupInfo.Group;
 import cjc.weixinmp.bean.GroupInfo.Groups;
 import cjc.weixinmp.bean.GroupInfo.UserGroup;
-import cjc.weixinmp.bean.User;
+import cjc.weixinmp.bean.WeixinmpUser;
 import cjc.weixinmp.bean.Users;
 
 /**
@@ -158,12 +158,12 @@ public class UserManagerService {
      * @return 这个用户的详细信息，null为找不到
      * @throws WeixinException 如果发生错误
      */
-    public User getUser(String openId) throws WeixinException {
+    public WeixinmpUser getUser(String openId) throws WeixinException {
         controller.logInfo("获取用户基本信息：openId=" + openId);
         String url = controller.getProperty("user_info_url", null, false);
         try {
             url = url.replaceFirst("OPENID", openId);
-            User result = controller.post(url, null, User.class, "getUser");
+            WeixinmpUser result = controller.post(url, null, WeixinmpUser.class, "getUser");
             controller.logInfo("获取用户基本信息结果：" + result);
             return result;
         } catch (WeixinException e) {

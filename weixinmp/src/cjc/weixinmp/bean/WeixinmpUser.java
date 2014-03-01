@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 用户信息
  * @author jianqing.cai@qq.com, https://github.com/caijianqing/weixinmp4java/
  */
-public class User implements Serializable {
+public class WeixinmpUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User [subscribe=" + subscribe + ", openid=" + openid + ", nickname=" + nickname + ", sex=" + sex + ", city=" + city + ", country=" + country
+        return "WeixinmpUser [subscribe=" + subscribe + ", openid=" + openid + ", nickname=" + nickname + ", sex=" + sex + ", city=" + city + ", country=" + country
                 + ", province=" + province + ", language=" + language + ", headimgurl=" + headimgurl + ", subscribe_time=" + subscribe_time + "]";
     }
 

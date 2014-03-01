@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,12 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import cjc.weixinmp.MediaLibraryService;
 import cjc.weixinmp.bean.CustomMenu;
 import cjc.weixinmp.bean.CustomMenu.CustomButton;
+import cjc.weixinmp.bean.GroupInfo.Group;
 import cjc.weixinmp.bean.Media;
 import cjc.weixinmp.bean.QrCodeRequest.TYPE;
 import cjc.weixinmp.bean.QrCodeResponse;
+import cjc.weixinmp.bean.WeixinmpUser;
 
 /**
  * 测试Servlet
+ * 
  * @author jianqing.cai@qq.com, https://github.com/caijianqing/weixinmp4java/
  */
 public class WeixinmpTestServlet extends HttpServlet {
@@ -38,46 +43,64 @@ public class WeixinmpTestServlet extends HttpServlet {
                 .addSubButton(CustomMenu.TYPE.click, "按钮二", "anniu2", null) //
                 .addSubButton(CustomMenu.TYPE.view, "视频", null, "http://v.qq.com");
         Engine.getWeixinmpController().getCustomMenuService().updateMenu(button);
+        write(response, "已更新自定义菜单，请查看微信。可能需要重新打开对话框或重新关注。");
     }
 
     public void menuQuery(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getCustomMenuService().getMenu();
+        CustomMenu menu = Engine.getWeixinmpController().getCustomMenuService().getMenu();
+        write(response, menu);
     }
 
     public void menuDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Engine.getWeixinmpController().getCustomMenuService().deleteMenu();
+        write(response, "已删除自定义菜单，请查看微信。可能需要重新打开对话框或重新关注。");
     }
 
     // //////////////////////////////////////////主动消息/////////////////////////////////////////////////
 
     public void sendText(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getMessageService().sendText("o7R_hjgD2254yWvNk33Ij0tg9Kgk", "现在时间是：" + new Date());
+        String to = request.getParameter("to");
+        String text = request.getParameter("text");
+        Engine.getWeixinmpController().getMessageService().sendText(to, text + "\n\n" + new Date());
     }
 
     // //////////////////////////////////////////用户管理/////////////////////////////////////////////////
 
     public void groupCreate(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().addGroup("大猩猩");
+        String groupName = request.getParameter("groupName");
+        Engine.getWeixinmpController().getUserManagerService().addGroup(groupName);
+        write(response, "操作成功，请到微信公众平台的用户管理界面查看。");
     }
 
     public void groupGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().getAllGroupList();
+        List<Group> list = Engine.getWeixinmpController().getUserManagerService().getAllGroupList();
+        write(response, list);
     }
 
     public void groupId(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().getGroupIdByUser("o7R_hjgD2254yWvNk33Ij0tg9Kgk");
+        String id = request.getParameter("id");
+        Integer id2 = Engine.getWeixinmpController().getUserManagerService().getGroupIdByUser(id);
+        write(response, id2);
     }
 
     public void groupUpdateName(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().updateGroupName(100, "大猩猩2");
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        String name = request.getParameter("name");
+        Engine.getWeixinmpController().getUserManagerService().updateGroupName(id, name);
+        write(response, "操作成功，请到微信公众平台的用户管理界面查看。");
     }
 
     public void groupMoveUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().moveUserGroup("o7R_hjgD2254yWvNk33Ij0tg9Kgk", 100);
+        String userId = request.getParameter("userId");
+        Integer groupId = Integer.valueOf(request.getParameter("groupId"));
+        Engine.getWeixinmpController().getUserManagerService().moveUserGroup(userId, groupId);
+        write(response, "操作成功，请到微信公众平台的用户管理界面查看。");
     }
 
     public void userInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Engine.getWeixinmpController().getUserManagerService().getUser("o7R_hjgD2254yWvNk33Ij0tg9Kgk");
+        String userId = request.getParameter("userId");
+        WeixinmpUser user = Engine.getWeixinmpController().getUserManagerService().getUser(userId);
+        write(response, user);
     }
 
     public void userList(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -87,9 +110,12 @@ public class WeixinmpTestServlet extends HttpServlet {
     // //////////////////////////////////////////参数二维码/////////////////////////////////////////////////
 
     public void qrcodeCreate(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QrCodeResponse qrcode2 = Engine.getWeixinmpController().getQrCodeService().createQrcode(TYPE.QR_LIMIT_SCENE, 1234, 200);
+        TYPE type = TYPE.valueOf(request.getParameter("type"));
+        Integer sceneId = Integer.valueOf(request.getParameter("sceneId"));
+        Integer expreSeconds = Integer.valueOf(request.getParameter("expreSeconds"));
+        QrCodeResponse qrcode2 = Engine.getWeixinmpController().getQrCodeService().createQrcode(type, sceneId, expreSeconds);
         File file = Engine.getWeixinmpController().getQrCodeService().getQrCodeAsFile(qrcode2.ticket);
-        System.out.println(file);
+        write(response, qrcode2.toString() + "  二维码已下载到本地：<a href='file:///" + file.getAbsolutePath().replaceAll("\\\\", "/") + "'>" + file.getAbsolutePath() + "</a>");
     }
 
     // 访问这个方法的时候，提供的ticket参数注意url编码，特别是+号使用%20代替
@@ -110,8 +136,20 @@ public class WeixinmpTestServlet extends HttpServlet {
     // //////////////////////////////////////////上传文件/////////////////////////////////////////////////
 
     public void uploadImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Media media = Engine.getWeixinmpController().getMediaLibraryService().uploadMedia(MediaLibraryService.TYPE.image, new File("d:/img2.jpg"));
-        Engine.getWeixinmpController().getMessageService().sendImage("o7R_hjgD2254yWvNk33Ij0tg9Kgk", media.media_id);
+        String file = request.getParameter("file");
+        String userId = request.getParameter("userId");
+        Media media = Engine.getWeixinmpController().getMediaLibraryService().uploadMedia(MediaLibraryService.TYPE.image, new File(file));
+        if(userId != null && userId.trim().length() > 0){
+            Engine.getWeixinmpController().getMessageService().sendImage(userId, media.media_id);
+        }
+        write(response, media);
+    }
+    
+    public void downloadMedia(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String mediaId = request.getParameter("mediaId");
+        String filenameSuffix = request.getParameter("filenameSuffix");
+        File file = Engine.getWeixinmpController().getMediaLibraryService().getMedia(mediaId, filenameSuffix);
+        write(response, "媒体文件已下载到本地：<a href='file:///" + file.getAbsolutePath().replaceAll("\\\\", "/") + "'>" + file.getAbsolutePath() + "</a>");
     }
 
     // ///////////////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +165,23 @@ public class WeixinmpTestServlet extends HttpServlet {
             m.invoke(this, request, response);
         } catch (Exception e) {
             e.printStackTrace();
+            write(response, e.getCause().getMessage());
         }
+    }
+
+    private void write(HttpServletResponse response, Object obj) throws IOException {
+        String str;
+        if (obj != null) {
+            str = obj.toString();
+        } else {
+            str = "null";
+        }
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8;");
+        Writer w = response.getWriter();
+        w.write("操作结果：" + str);
+        w.flush();
+        w.close();
     }
 
 }
