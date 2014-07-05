@@ -8,7 +8,17 @@
   
   <body>
   
-  所有示例在cjc.weixinmp.test.WeixinmpTestServlet中，请自行修改调整测试。
+   <div>所有示例在cjc.weixinmp.test.WeixinmpTestServlet中，请自行修改调整测试。<br><br></div>
+   <div>如需启动本地测试（模拟微信服务器返回数据）：<br>
+   请在cjc.weixinmp.test.Engine.contextInitialized(ServletContextEvent sce)<br>
+   开启weixinmpController.useLocalTestServer(true);<br>
+   并在res/test/目录下创建相应的txt文件，内容为接口返回的字符窜结果样例<br>
+   </div>
+  
+  <h3>基础接口</h3>
+  <ul>
+	  <li><a target="_blank" href="test?action=getAccessToken">getAccessToken</a></li>
+  </ul>
   
   <h3>自定义菜单</h3>
   <ul>
@@ -21,7 +31,7 @@
   <ul>
 	  <li>
 		  <form action="test?action=sendText" method="post" target="_blank">
-		     接收用户OpenId：<input name="to" value="">
+		     接收用户OpenId：<input name="to" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
 		     消息内容：<input name="text" value="hello">
 		     <input type="submit" value="发送">
 		  </form>
@@ -50,7 +60,7 @@
 
 	  <li>移动用户到指定
 	    <form action="test?action=groupMoveUser" method="post" target="_blank">
-		     用户OpenId：<input name="userId" value="">
+		     用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
 		     分组ID：<input name="groupId" value="">
 		     <input type="submit" value="发送">
 		</form><br>
@@ -58,14 +68,14 @@
 
 	  <li>查询用户所在分组ID
 	    <form action="test?action=groupId" method="post" target="_blank">
-		     用户OpenId：<input name="id" value="">
+		     用户OpenId：<input name="id" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
 		     <input type="submit" value="发送">
 		</form><br>
 	  </li>
 
 	  <li>查询用户资料
 	    <form action="test?action=userInfo" method="post" target="_blank">
-		     用户OpenId：<input name="userId" value="">
+		     用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
 		     <input type="submit" value="发送">
 		</form><br>
 	  </li>
@@ -108,7 +118,7 @@
 	  <li>上传图片文件
 	    <form action="test?action=uploadImage" method="post" target="_blank">
 		     文件绝对路径：<input name="file" value="d:/img2.jpg">
-		     顺便发给这个用户OpenId：<input name="userId" value="">
+		     顺便发给这个用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
 		     <input type="submit" value="发送">
 		</form><br>
 	  </li>

@@ -98,8 +98,15 @@ public class UserOperate extends AbstractUserOperate {
     @Override
     public AbstractResponse onClickEvent(ClickEventRequest click) throws WeixinException {
         // 自定义菜单事件
-        System.out.println("收到点击事件：" + click);
+        System.out.println("收到点击菜单事件：" + click);
         return buildTextResponse(click.EventKey);
+    }
+    
+    @Override
+    public AbstractResponse onViewEvent(ClickEventRequest click) throws WeixinException {
+    	// 自定义菜单事件
+    	System.out.println("收到点击链接事件：" + click);
+    	return buildTextResponse(click.EventKey);
     }
 
 }

@@ -1,0 +1,76 @@
+{
+    "errcode": 0,
+    "errmsg": "success",
+    "product_info": {
+        "product_id": "pDF3iY6Kr_BV_CXaiYysoGqJhppQ",
+        "product_base": {
+            "name": "testaddproduct",
+            "category_id": [
+                537074298
+            ],
+            "img": [
+                "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjD3ulEKogfsiaua49pv\nLfUS8Ym0GSYjViaLic0FD3vN0V8PILcibEGb2fPfEOmw/0"
+            ],
+            "property": [
+                {
+                    "id": "Ʒ��",
+                    "vid": "Fujifilm/��ʿ"
+                },
+                {
+                    "id": "��Ļ�ߴ�",
+                    "vid": "1.8 Ӣ��"
+                },
+                {
+                    "id": "��������",
+                    "vid": "CCD ����"
+                }
+            ],
+            "sku_info": [
+                {
+                    "id": "1075741873",
+                    "vid": [
+                        "1079742386",
+                        "1079742363"
+                    ]
+                }
+            ],
+            "buy_limit": 10,
+            "main_img": "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjD3ulEKogfsiaua49pvLfUS\n8Ym0GSYjViaLic0FD3vN0V8PILcibEGb2fPfEOmw/0",
+            "detail_html": "<div  class=\"item_pic_wrp\" \nstyle=\"margin-bottom:8px;font-size:0;\"><img  class=\"item_pic\" \nstyle=\"width:100%;\"  alt=\"\" \nsrc=\"http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjD3ulEKogfsiaua49p\nvLfUS8Ym0GSYjViaLic0FD3vN0V8PILcibEGb2fPfEOmw/0\"  ></div><p \nstyle=\"margin-bottom:11px;margin-top:11px;\">test</p><div \nclass=\"item_pic_wrp\"  style=\"margin-bottom:8px;font-size:0;\"><img \nclass=\"item_pic\"  style=\"width:100%;\"  alt=\"\" \nsrc=\"http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjD3ul1UcLcwxrFdwTK\nYhH9Q5YZoCfX4Ncx655ZK6ibnlibCCErbKQtReySaVA/0\"  ></div><p \n- 12 -style=\"margin-bottom:11px;margin-top:11px;\">test again</p>"
+        },
+        "sku_list": [
+            {
+                "sku_id": "1075741873:1079742386",
+                "price": 30,
+                "icon_url": "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjD3ulEKogfsiaua49pvLfUS\n8Ym0GSYjViaLic0FD3vN0V8PILcibEGb2fPfEOmw/0",
+                "quantity": 800,
+                "product_code": "testing",
+                "ori_price": 9000000
+            },
+            {
+                "sku_id": "1075741873:1079742363",
+                "price": 30,
+                "icon_url": "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl28bJj62XgfHPibY3ORKicN1oJ4CcoIr4BMbfA8Lqyy\njzOZzqrOGz3f5KWq1QGP3fo6TOTSYD3TBQjuw/0",
+                "quantity": 800,
+                "product_code": "testingtesting",
+                "ori_price": 9000000
+            }
+        ],
+        "attrext": {
+            "isPostFree": 0,
+            "isHasReceipt": 1,
+            "isUnderGuaranty": 0,
+            "isSupportReplace": 0,
+            "location": {
+                "country": "�й�",
+                "province": "�㶫ʡ",
+                "city": "������",
+                "address": "T.I.T ����԰"
+            }
+        },
+        "delivery_info": {
+            "delivery_type": 1,
+            "template_id": 103312920
+        }
+    }
+}

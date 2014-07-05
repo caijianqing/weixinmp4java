@@ -28,8 +28,12 @@ public abstract class AbstractEventRequest extends AbstractRequest {
         SCAN,
         /** 上报地理位置事件 */
         LOCATION,
-        /** 自定义菜单事件 */
-        CLICK;
+        /** 点击菜单拉取消息时的事件推送  */
+        CLICK,
+        /** 点击菜单跳转链接时的事件推送  */
+        VIEW,
+        /** “小店”订单支付完成的事件推送（不知是否为这个字符窜，从文档的数据样例中得到） */
+        merchant_order;
     }
 
 }

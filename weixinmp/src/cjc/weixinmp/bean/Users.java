@@ -37,7 +37,7 @@ public class Users implements Serializable {
         private static final long serialVersionUID = 1L;
 
         /** OPENID 集合 */
-        List<String> openid;
+        public List<String> openid;
 
         @Override
         public String toString() {

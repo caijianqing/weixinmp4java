@@ -22,6 +22,8 @@ public class Engine implements ServletContextListener, ServletRequestListener, H
     public void contextInitialized(ServletContextEvent sce) {
         // 初始化一个全局唯一的控制器实例
         weixinmpController = new WeixinmpController();
+        // 声明为使用本地测试服务器
+        weixinmpController.useLocalTestServer(false);
     }
 
     @Override

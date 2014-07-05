@@ -1,20 +1,16 @@
 package cjc.weixinmp.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Writer;
-import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cjc.weixinmp.MediaLibraryService;
+import cjc.weixinmp.bean.AccessToken;
 import cjc.weixinmp.bean.CustomMenu;
 import cjc.weixinmp.bean.CustomMenu.CustomButton;
 import cjc.weixinmp.bean.GroupInfo.Group;
@@ -28,9 +24,16 @@ import cjc.weixinmp.bean.WeixinmpUser;
  * 
  * @author jianqing.cai@qq.com, https://github.com/caijianqing/weixinmp4java/
  */
-public class WeixinmpTestServlet extends HttpServlet {
+public class WeixinmpTestServlet extends BaseTestServlet {
 
     private static final long serialVersionUID = 1L;
+
+    // ///////////////////////////////////////////ACCESS TOKEN////////////////////////////////////////////////
+
+    public void getAccessToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AccessToken token = Engine.getWeixinmpController().getAccessToken(true);
+        write(response, token);
+    }
 
     // ///////////////////////////////////////////自定义菜单操作////////////////////////////////////////////////
 
@@ -139,49 +142,17 @@ public class WeixinmpTestServlet extends HttpServlet {
         String file = request.getParameter("file");
         String userId = request.getParameter("userId");
         Media media = Engine.getWeixinmpController().getMediaLibraryService().uploadMedia(MediaLibraryService.TYPE.image, new File(file));
-        if(userId != null && userId.trim().length() > 0){
+        if (userId != null && userId.trim().length() > 0) {
             Engine.getWeixinmpController().getMessageService().sendImage(userId, media.media_id);
         }
         write(response, media);
     }
-    
+
     public void downloadMedia(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String mediaId = request.getParameter("mediaId");
         String filenameSuffix = request.getParameter("filenameSuffix");
         File file = Engine.getWeixinmpController().getMediaLibraryService().getMedia(mediaId, filenameSuffix);
         write(response, "媒体文件已下载到本地：<a href='file:///" + file.getAbsolutePath().replaceAll("\\\\", "/") + "'>" + file.getAbsolutePath() + "</a>");
-    }
-
-    // ///////////////////////////////////////////////////////////////////////////////////////////
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String action = request.getParameter("action");
-            Method m = this.getClass().getMethod(action, HttpServletRequest.class, HttpServletResponse.class);
-            m.invoke(this, request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            write(response, e.getCause().getMessage());
-        }
-    }
-
-    private void write(HttpServletResponse response, Object obj) throws IOException {
-        String str;
-        if (obj != null) {
-            str = obj.toString();
-        } else {
-            str = "null";
-        }
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html;charset=utf-8;");
-        Writer w = response.getWriter();
-        w.write("操作结果：" + str);
-        w.flush();
-        w.close();
     }
 
 }

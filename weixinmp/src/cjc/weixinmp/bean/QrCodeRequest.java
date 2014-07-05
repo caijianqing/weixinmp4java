@@ -41,7 +41,7 @@ public class QrCodeRequest implements Serializable {
         expire_seconds = expreSeconds;
         action_name = actionName;
         action_info = new ActionInfo();
-        action_info.scene_id = sceneId;
+        action_info.scene.scene_id = sceneId;
     }
 
     @Override
@@ -56,13 +56,28 @@ public class QrCodeRequest implements Serializable {
     public static class ActionInfo implements Serializable {
 
         private static final long serialVersionUID = 1L;
-
+        
         /** 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000） */
-        public Integer scene_id;
+        public Scene scene = new Scene();
+        
+        /** 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000） */
+        public static class Scene implements Serializable {
+
+            private static final long serialVersionUID = 1L;
+
+            /** 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000） */
+            public Integer scene_id;
+            
+            @Override
+            public String toString() {
+                return "Scene [scene_id=" + scene_id + "]";
+            }
+            
+        }
 
         @Override
         public String toString() {
-            return "ActionInfo [scene_id=" + scene_id + "]";
+            return "ActionInfo [scene=" + scene + "]";
         }
 
     }
@@ -77,5 +92,5 @@ public class QrCodeRequest implements Serializable {
         /** 永久 */
         QR_LIMIT_SCENE;
     }
-
+    
 }

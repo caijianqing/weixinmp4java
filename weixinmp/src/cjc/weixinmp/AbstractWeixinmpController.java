@@ -68,27 +68,33 @@ import cjc.weixinmp.bean.TextRequest;
 import cjc.weixinmp.bean.TextResponse;
 import cjc.weixinmp.bean.VideoRequest;
 import cjc.weixinmp.bean.VoiceRequest;
+import cjc.weixinmp.merchant.bean.OrderPayEventRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * 微信公众平台API控制器
+ * 微信公众平台API控制器<br>
+ * 该控制器一个实例对应一个公众号
  * @author jianqing.cai@qq.com, https://github.com/caijianqing/weixinmp4java/, 2014-2-19 下午1:49:05
  */
 public abstract class AbstractWeixinmpController {
 
     /** 微信(默认)配置文件 */
-    final static String WEIXIN_DEFAULT_PROPERTIES_FILENAME = "/weixinmp.default.properties";
+    public final static String WEIXIN_DEFAULT_PROPERTIES_FILENAME = "/weixinmp.default.properties";
 
     /** 微信配置文件 */
-    final static String WEIXIN_PROPERTIES_FILENAME = "/weixinmp.properties";
+    public final static String WEIXIN_PROPERTIES_FILENAME = "/weixinmp.properties";
 
     /** 数据文件后缀名 */
     final static String DATA_FILENAME_SUFFIC = ".data";
 
     /** XML文件储存路径 */
     private File dataDir;
+    
+    /** 配置文件路径 */
+    private String propertiesPath;
 
     /** 编码类型 */
     private String encoding;
@@ -135,9 +141,23 @@ public abstract class AbstractWeixinmpController {
     // //////////////////////////////////////////////////////
 
     /**
-     * 创建一个微信公众平台控制器
+     * 创建一个微信公众平台控制器（使用默认配置文件：weixinmp.properties）
+     * @see #AbstractWeixinmpController(String)
      */
     public AbstractWeixinmpController() {
+    	this(WEIXIN_PROPERTIES_FILENAME);
+    }
+    	
+    /**
+     * 创建一个微信公众平台控制器（自定义配置文件）
+     * 
+     * @param propertiesPath 配置文件路径<br>
+     *    多公众号时使用（一个weixinmp.properties文件对应一个公众号）<br>
+     *    默认为：weixinmp.properties
+     * @see #AbstractWeixinmpController()
+     */
+	public AbstractWeixinmpController(String propertiesPath) {
+		this.propertiesPath = propertiesPath;
         InputStream in = null;
         try {
             // 加载默认配置文件
@@ -147,9 +167,9 @@ public abstract class AbstractWeixinmpController {
             defaultProperties.load(in);
             in.close();
             // 加载用户配置文件
-            url = this.getClass().getResource(WEIXIN_PROPERTIES_FILENAME);
+            url = this.getClass().getResource(propertiesPath);
             if (url == null) {
-                throw new RuntimeException("缺少配置文件：" + WEIXIN_PROPERTIES_FILENAME);
+                throw new RuntimeException("缺少配置文件：" + propertiesPath);
             }
             in = url.openStream();
             properties = new Properties();
@@ -192,6 +212,8 @@ public abstract class AbstractWeixinmpController {
             unMarshallerJAXBContexts.put("event_" + EventRequest.EventType.SCAN, JAXBContext.newInstance(ScanEventRequest.class));
             unMarshallerJAXBContexts.put("event_" + EventRequest.EventType.LOCATION, JAXBContext.newInstance(LocationEventRequest.class));
             unMarshallerJAXBContexts.put("event_" + EventRequest.EventType.CLICK, JAXBContext.newInstance(ClickEventRequest.class));
+            unMarshallerJAXBContexts.put("event_" + EventRequest.EventType.VIEW, JAXBContext.newInstance(ClickEventRequest.class));
+            unMarshallerJAXBContexts.put("event_" + EventRequest.EventType.merchant_order, JAXBContext.newInstance(OrderPayEventRequest.class));
         } catch (JAXBException e) {
             throw new RuntimeException(e.getMessage(), e);
         } catch (FileNotFoundException e) {
@@ -279,10 +301,11 @@ public abstract class AbstractWeixinmpController {
         }
         if (value == null) {
             if (!allowNull) {
-                throw new RuntimeException("配置文件（" + WEIXIN_PROPERTIES_FILENAME + "）缺少属性：key=" + key);
+                throw new RuntimeException("配置文件（" + propertiesPath + "）缺少属性：key=" + key);
             }
+            return null;
         }
-        return value;
+        return value.trim();
     }
 
     // //////////////////////////////////////////////////////
@@ -315,6 +338,29 @@ public abstract class AbstractWeixinmpController {
 
     // //////////////////////////////////////////////////////
 
+    /** 小店功能接口 */
+    private MerchantCommonService merchantCommonService = new MerchantCommonService(this);
+
+    /** 邮费模板管理接口 */
+    private MerchantExpressService merchantExpressService = new MerchantExpressService(this);
+    
+    /** 商品分组管理接口  */
+    private MerchantGroupService merchantGroupService = new MerchantGroupService(this);
+    
+    /** 订单管理接口 */
+    private MerchantOrderService merchantOrderService = new MerchantOrderService(this);
+    
+    /** 商品管理接口 */
+    private MerchantProductService merchantProductService = new MerchantProductService(this);
+    
+    /** 货架管理接口 */
+    private MerchantShelfService merchantShelfService = new MerchantShelfService(this);
+    
+    /** 库存管理接口 */
+    private MerchantStockService merchantStockService = new MerchantStockService(this);
+    
+    // //////////////////////////////////////////////////////
+
     /** GSON缓存 */
     private static Map<Long, Gson> gsonCache = new HashMap<Long, Gson>();
 
@@ -326,7 +372,9 @@ public abstract class AbstractWeixinmpController {
         long id = Thread.currentThread().getId();
         Gson gson = gsonCache.get(id);
         if (gson == null) {
-            gson = new Gson();
+            GsonBuilder g = new GsonBuilder();
+            g = g.disableHtmlEscaping(); // 禁用HTML转义
+            gson = g.create();
             gsonCache.put(id, gson);
         }
         return gson;
@@ -497,12 +545,24 @@ public abstract class AbstractWeixinmpController {
                             logInfo(locationEvent.toString());
                             resp = operate.onLocationEvent(locationEvent);
                             break;
-                        case CLICK: // 自定义菜单点击事件
+                        case CLICK: // 自定义菜单点击按钮事件
                             ClickEventRequest clickEvent = (ClickEventRequest) unMarshallerJAXBContexts. //
                                     get("event_" + EventRequest.EventType.CLICK).createUnmarshaller().unmarshal(reader);
                             logInfo(clickEvent.toString());
                             resp = operate.onClickEvent(clickEvent);
                             break;
+                        case VIEW: // 点击菜单跳转链接时的事件推送 
+                        	ClickEventRequest viewEvent = (ClickEventRequest) unMarshallerJAXBContexts. //
+                        			get("event_" + EventRequest.EventType.VIEW).createUnmarshaller().unmarshal(reader);
+                        	logInfo(viewEvent.toString());
+                        	resp = operate.onViewEvent(viewEvent);
+                        	break;
+                        case merchant_order: // “小店”订单支付完成事件
+                        	OrderPayEventRequest merchantOrderEvent = (OrderPayEventRequest) unMarshallerJAXBContexts. //
+                        	get("event_" + EventRequest.EventType.merchant_order).createUnmarshaller().unmarshal(reader);
+                        	logInfo(merchantOrderEvent.toString());
+                        	resp = operate.onMerchantOrderPayEvent(merchantOrderEvent);
+                        	break;
                         }
                     } else {
                         // 无效的请求
@@ -588,7 +648,7 @@ public abstract class AbstractWeixinmpController {
      *            是否更新token
      * @return
      */
-    protected final AccessToken getAccessToken(boolean renew) throws WeixinException {
+    public final AccessToken getAccessToken(boolean renew) throws WeixinException {
         synchronized (lastAccessToken) {
             // 如果上次获取到的token仍然在有效期则直接返回
             long now = new Date().getTime();
@@ -659,7 +719,7 @@ public abstract class AbstractWeixinmpController {
      * @return
      * @throws WeixinException
      */
-    private String replaceAccessToken(String url) throws WeixinException {
+    protected String replaceAccessToken(String url) throws WeixinException {
         if (url.indexOf("ACCESS_TOKEN") != -1) {
             url = url.replaceFirst("ACCESS_TOKEN", getAccessToken(false).access_token);
         }
@@ -770,7 +830,7 @@ public abstract class AbstractWeixinmpController {
             if (param != null) {
                 conn.setDoOutput(true);
                 String reqJson = gson.toJson(param);
-                logDebug(reqJson);
+                logDebug("JSON:\t"+reqJson);
                 os = conn.getOutputStream();
                 os.write(reqJson.getBytes(encoding)); // 必须这样getByte(encoding)才不会乱码
                 os.flush();
@@ -871,6 +931,16 @@ public abstract class AbstractWeixinmpController {
                     // 输出实体头和内容
                     Entity entity = iter.next();
                     switch (entity.type) {
+                    case stream:
+                        InputStream stream = (InputStream) entity.obj;
+                        sb.append("Content-Disposition: form-data;name=\"" + entity.name + "\";filename=\"file1\"\r\n");
+                        sb.append("Content-Type:application/octet-stream\r\n\r\n");
+                        out.write(sb.toString().getBytes(encoding));
+                        dis = new DataInputStream(stream);
+                        while ((bytes = dis.read(bufferOut)) != -1) {
+                            out.write(bufferOut, 0, bytes);
+                        }
+                        break;
                     case binary:
                         File file = (File) entity.obj;
                         sb.append("Content-Disposition: form-data;name=\"" + entity.name + "\";filename=\"" + file.getAbsolutePath() + "\"\r\n");
@@ -912,7 +982,7 @@ public abstract class AbstractWeixinmpController {
             logDebug("请求:" + url + " ，返回: " + json);
             // 检查是否出现错误
             GlobalError error = gson.fromJson(json, GlobalError.class);
-            if (error.errcode != null) {
+            if (error != null && error.errcode != null) {
                 if (error.errcode == 40001) {
                     // 如果token超时则重新获取
                     logInfo("AccessToken过时，重新获取。");
@@ -927,6 +997,9 @@ public abstract class AbstractWeixinmpController {
             }
             // 请求完成
             T obj = gson.fromJson(data[1].toString(), returnType);
+            if(obj == null){
+                throw new WeixinException(id + "_BadResponse", "获取不到响应值：" + url, null);
+            }
             return obj;
         } catch (JsonSyntaxException e) {
             throw new WeixinException(id + "_JsonSyntaxException", e.getMessage(), e);
@@ -1188,6 +1261,59 @@ public abstract class AbstractWeixinmpController {
         return userManagerService;
     }
 
+    // /////////////////////////小店接口//////////////////////////
+    
+
+    /**
+     * @return 返回 小店功能接口
+     */
+    public final MerchantCommonService getMerchantCommonService() {
+        return merchantCommonService;
+    }
+
+    /**
+     * @return 返回 邮费模板管理接口 
+     */
+    public final MerchantExpressService getMerchantExpressService() {
+        return merchantExpressService;
+    }
+
+    /**
+     * @return 返回 商品分组管理接口 
+     */
+    public final MerchantGroupService getMerchantGroupService() {
+        return merchantGroupService;
+    }
+
+    /**
+     * @return 返回 订单管理接口
+     */
+    public final MerchantOrderService getMerchantOrderService() {
+        return merchantOrderService;
+    }
+
+    /**
+     * @return 返回 商品管理接口
+     */
+    public final MerchantProductService getMerchantProductService() {
+        return merchantProductService;
+    }
+
+    /**
+     * @return 返回 货架管理接口
+     */
+    public final MerchantShelfService getMerchantShelfService() {
+        return merchantShelfService;
+    }
+
+    /**
+     * @return 返回 库存管理接口
+     */
+    public final MerchantStockService getMerchantStockService() {
+        return merchantStockService;
+    }
+
+    
     // /////////////////////////基础接口（被动消息）//////////////////////////
 
     /**
@@ -1245,7 +1371,9 @@ public abstract class AbstractWeixinmpController {
             /** 需要转换为json格式 */
             json,
             /** 二进制数据，对象必须为文件对象 */
-            binary;
+            binary,
+            /** 二进制数据数据流，对象必须为InputStream的子类 */
+            stream;
         }
 
         /**
@@ -1260,7 +1388,7 @@ public abstract class AbstractWeixinmpController {
             /** 属性名 */
             String name;
 
-            /** 值对象 */
+            /** 值对象，根据type固定的对象 */
             Object obj;
 
             public Entity(TYPE type, String name, Object obj) {

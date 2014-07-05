@@ -1,14 +1,15 @@
 微信公众平台API接口JAVA版
 =============
   - 别名：weixinmp4java、wechat4java
-  - 这个包是微信公众平台纯API接口实现，除了一个gson的jar包以外，没有多余的东西在里面。
+  - 这个包是微信公众平台纯API接口实现，除了一个gson的jar包以外，没有任何业务代码。
   - 支持公众号（包括订阅号和服务号）的所有主动接口和被动接口。
+  - 支持小店接口v1.4
 
 
 项目介绍
 =============
     /weixinmp          实现代码主项目，可以输出为jar包使用。注意依赖gson.jar。
-    /weixinmp.test     示例&测试项目，看这里快速上手。
+    /weixinmp.test     示例&测试项目，看这里快速上手。需要依赖/weixinmp项目，注意不是把代码复制过来用，在Eclipse或者MyEclipse是两个project的形式。
 
 软件包介绍
 =============
@@ -17,6 +18,12 @@
 
 ##cjc.weixinmp.bean
 接口通讯中涉及到的数据格式（xml或者json），已被封装为实体。
+
+##cjc.weixinmp.merchant.bean
+存放与小店有关实体
+
+##cjc.weixinmp.merchant.builder
+因为小店的数据实体比较复杂（很多字段很多结构），所有特设数据构造器，非常好用！
 
 配置文件
 =============
@@ -71,7 +78,9 @@
     // 用户点击自定义菜单事件
     AbstractResponse cjc.weixinmp.AbstractUserOperate.onClickEvent(ClickEventRequest click) 
     
-
+    // 小店支付通知
+    AbstractResponse cjc.weixinmp.AbstractUserOperate.onMerchantOrderPayEvent(OrderPayEventRequest orderPayEvent) 
+    
 以“用户订阅事件”为例：
 
     AbstractResponse cjc.weixinmp.AbstractUserOperate.onSubscribeEvent(SubscribeEventRequest event){
@@ -112,6 +121,24 @@
     // 用户管理接口
     UserManagerService cjc.weixinmp.AbstractWeixinmpController.getUserManagerService()
 
+    // 商品管理接口
+    MerchantProductService cjc.weixinmp.AbstractWeixinmpController.getMerchantProductService();
+
+    // 库存管理接口
+    MerchantStockService cjc.weixinmp.AbstractWeixinmpController.getMerchantStockService();
+
+    // 邮费模板管理接口 
+    MerchantExpressService cjc.weixinmp.AbstractWeixinmpController.getMerchantExpressService();
+
+    // 商品分组管理接口 
+    MerchantGroupService cjc.weixinmp.AbstractWeixinmpController.getMerchantGroupService();
+
+    // 货架管理接口
+    MerchantShelfService cjc.weixinmp.AbstractWeixinmpController.getMerchantShelfService();
+
+    // 订单管理接口
+    MerchantOrderService cjc.weixinmp.AbstractWeixinmpController.getMerchantOrderService();
+
 
 以创建自定义菜单为例：
 
@@ -127,9 +154,9 @@
 
 联系方式
 ==========================================
-这里是唯一的更新地点。
+这里是唯一的代码仓库。
 
-欢迎加入QQ群讨论：289709908
+欢迎加入QQ群讨论：289709908(在线即解决问题，代码更新更快，欢迎报告BUG和技术交流)
 
 专用Email：github@caijianqing.cn
 

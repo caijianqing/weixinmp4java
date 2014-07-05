@@ -59,8 +59,8 @@ public class BaseSupportService {
             if (e.isNeedLog()) {
                 controller.saveToFile(e.getLogFilename(), e.getLogContent());
             }
+            throw new WeixinException(CommonUtils.getNextId() + "_ErrorAccessToken", "获取AccessToken失败", e);
         }
-        return null;
     }
 
     /**

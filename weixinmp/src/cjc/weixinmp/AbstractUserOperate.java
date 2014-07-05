@@ -12,6 +12,7 @@ import cjc.weixinmp.bean.TextRequest;
 import cjc.weixinmp.bean.TextResponse;
 import cjc.weixinmp.bean.VideoRequest;
 import cjc.weixinmp.bean.VoiceRequest;
+import cjc.weixinmp.merchant.bean.OrderPayEventRequest;
 
 /**
  * 用户主动操作出发的事件的抽象接口<br>
@@ -177,7 +178,7 @@ public abstract class AbstractUserOperate {
     }
 
     /**
-     * 用户点击自定义（click）菜单事件
+     * 点击菜单拉取消息时的事件推送
      * @param click 包含点击参数的事件对象
      * @return 参见 {@link #onSubscribeEvent(SubscribeEventRequest)}
      * @throws WeixinException
@@ -185,6 +186,28 @@ public abstract class AbstractUserOperate {
      */
     protected AbstractResponse onClickEvent(ClickEventRequest click) throws WeixinException {
         throw new NotImplException();
+    }
+    
+    /**
+     * 点击菜单跳转链接时的事件推送 
+     * @param click 包含点击参数的事件对象
+     * @return 参见 {@link #onSubscribeEvent(SubscribeEventRequest)}
+     * @throws WeixinException
+     *             参见 {@link #onSubscribeEvent(SubscribeEventRequest)}
+     */
+    protected AbstractResponse onViewEvent(ClickEventRequest click) throws WeixinException {
+    	throw new NotImplException();
+    }
+    
+    /**
+     * 用户支付“小店”订单完成时的事件推送 
+     * @param orderPayEvent 包含点击参数的事件对象
+     * @return 参见 {@link #onSubscribeEvent(SubscribeEventRequest)}
+     * @throws WeixinException
+     *             参见 {@link #onSubscribeEvent(SubscribeEventRequest)}
+     */
+    protected AbstractResponse onMerchantOrderPayEvent(OrderPayEventRequest orderPayEvent) throws WeixinException {
+    	throw new NotImplException();
     }
 
 }
