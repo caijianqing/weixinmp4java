@@ -1,0 +1,44 @@
+2014.07.06  v91
+  1. 小店API 1.4完成【警告：小店代码仅在本地进行模拟测试，没有经过微信服务器测试，欢迎有条件的同学反馈BUG】
+     1.1 cjc.weixinmp包增加了7个以Merchant开头的类，分别对应API手册的7个功能接口，每个方法对应一个功能
+     1.2 增加cjc.weixinmp.merchant.bean包，存放与小店有关实体
+     1.3 增加cjc.weixinmp.merchant.builder包，因为小店的数据实体比较复杂（很多字段很多结构），所有特设数据构造器，非常好用！
+     1.4 AbstractUserOperate增加onMerchantOrderPayEvent接口，为小店的订单支付推送事件
+     1.5 详细测试例子查看cjc.weixinmp.test.WeixinmpTestXiaodianServlet，部署test项目后打开首页可以看到连接。
+  2. 内建模拟测试服务器，是本屌在封装小店接口时，因为没有小店测试权限特别开发的本地模拟测试模式。
+     开关在cjc.weixinmp.test.Engine的contextInitialized方法，默认关，见注释。
+
+2014.07.01
+   1. 修正转换JSON字符窜时HTML转义导致更新菜单失败的问题
+
+2014.06.11 
+
+  1. 增加对新接口“小店v1.13”的支持
+     详情见官方API：http://mp.weixin.qq.com/wiki/index.php?title=%E5%BE%AE%E4%BF%A1%E5%B0%8F%E5%BA%97%E6%8E%A5%E5%8F%A3
+
+     ########################## 警告 ##########################
+     由于本人没有足够的权限（服务号+已认证+已开通微支付），
+     无法调用“小店”接口，所以此版本代码没有经过官方接口测试。
+     请有条件的同学测试并反馈，谢谢！
+     另外：官方提供的文档里面的数据说明与数据样例有点出入，本实现以数据样例为准。
+     ########################## 警告 ########################## 
+
+
+  2. 增加对多公众号的支持
+     单公众号：使用默认的配置文件weixinmp.properties
+     cjc.weixinmp.AbstractWeixinmpController.AbstractWeixinmpController()
+
+     多公众号：使用自定义的配置文件名
+     cjc.weixinmp.AbstractWeixinmpController.AbstractWeixinmpController(String propertiesPath)
+
+  3. 修改小部分BUG
+     3.1 读取配置文件返回value前调用trim方法
+     3.2 修正NewsResponse结构
+
+
+
+2014.05.23 14:11 v62
+
+  1. 增加对推送事件“点击链接菜单事件（VIEW）”的支持
+
+
