@@ -9,7 +9,8 @@
 项目介绍
 =============
     /weixinmp          实现代码主项目，可以输出为jar包使用。注意依赖gson.jar。
-    /weixinmp.test     示例&测试项目，看这里快速上手。需要依赖/weixinmp项目，注意不是把代码复制过来用，在Eclipse或者MyEclipse是两个project的形式。
+    /weixinmp.test     示例&测试项目，看这里快速上手。需要依赖/weixinmp项目，
+                       注意不是把代码复制过来用，而是在Eclipse或者MyEclipse是两个project的形式。
 
 软件包介绍
 =============
