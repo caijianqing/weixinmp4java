@@ -5,6 +5,22 @@
   - 支持公众号（包括订阅号和服务号）的所有主动接口和被动接口。
   - 支持小店接口v1.4
 
+最近更新
+=============
+###2014.07.07
+   - 将代码切换为maven管理
+   - 原代码保留在no_maven目录中
+
+###2014.07.06  v91
+  - 小店API 1.4完成【警告：小店代码仅在本地进行模拟测试，没有经过微信服务器测试，欢迎有条件的同学反馈BUG】
+     1.1 cjc.weixinmp包增加了7个以Merchant开头的类，分别对应API手册的7个功能接口，每个方法对应一个功能
+     1.2 增加cjc.weixinmp.merchant.bean包，存放与小店有关实体
+     1.3 增加cjc.weixinmp.merchant.builder包，因为小店的数据实体比较复杂（很多字段很多结构），所有特设数据构造器，非常好用！
+     1.4 AbstractUserOperate增加onMerchantOrderPayEvent接口，为小店的订单支付推送事件
+     1.5 详细测试例子查看cjc.weixinmp.test.WeixinmpTestXiaodianServlet，部署test项目后打开首页可以看到连接。
+  - 内建模拟测试服务器，是本屌在封装小店接口时，因为没有小店测试权限特别开发的本地模拟测试模式。
+     开关在cjc.weixinmp.test.Engine的contextInitialized方法，默认关，见注释。
+
 
 项目介绍
 =============
