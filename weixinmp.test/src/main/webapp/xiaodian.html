@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>微信公众平台小店API测试界面</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  
+  <body>
+
+<pre>
+
+重要提示：
+   1. 小店接口权限要求：服务号+已认证+已开通微信支付，不符合条件的点击任何测试连接都返回<span style="color:red">API未授权错误</span>！
+   2. 本代码基于本地模拟返回进行简单测试，本地模拟服务器默认关闭，
+      如需本地测试，请前往cjc.weixinmp.test.Engine.contextInitialized(ServletContextEvent sce)开启
+
+
+1.  商品管理接口    
+1.1 <a target="_blank" href="xiaodian?action=addProduct">增加商品</a>
+1.2 <a target="_blank" href="xiaodian?action=deleteProduct">删除商品</a>
+1.3 <a target="_blank" href="xiaodian?action=updateProduct">修改商品</a>
+1.4 <a target="_blank" href="xiaodian?action=getProduct">查询商品</a>
+1.5 <a target="_blank" href="xiaodian?action=getProductByStatus">获取指定状态的所有商品</a>
+1.6 <a target="_blank" href="xiaodian?action=updateProductStatus">商品上下架</a>
+1.7 <a target="_blank" href="xiaodian?action=getSubCategory">获取指定分类的所有子分类</a>
+1.8 <a target="_blank" href="xiaodian?action=getSkuByCategory">获取指定子分类的所有SKU</a>
+1.9 <a target="_blank" href="xiaodian?action=getPropertyByCategory">获取指定分类的所有属性</a>
+
+2.  库存管理接口</a>
+2.1 <a target="_blank" href="xiaodian?action=addStock">增加库存</a>
+2.2 <a target="_blank" href="xiaodian?action=reduceStock">减少库存</a>
+
+3.  邮费模板管理接口  
+3.1 <a target="_blank" href="xiaodian?action=addExpress">增加邮费模板</a>
+3.2 <a target="_blank" href="xiaodian?action=deleteExpress">删除邮费模板</a>
+3.3 <a target="_blank" href="xiaodian?action=updateExpress">修改邮费模板</a>
+3.4 <a target="_blank" href="xiaodian?action=getExpressById">获取指定ID的邮费模板</a>
+3.5 <a target="_blank" href="xiaodian?action=getAllExpress">获取所有邮费模板</a>
+
+4.  分组管理接口
+4.1 <a target="_blank" href="xiaodian?action=addGroup">增加分组</a>
+4.2 <a target="_blank" href="xiaodian?action=deleteGroup">删除分组</a>
+4.3 <a target="_blank" href="xiaodian?action=updateGroupProperty">修改分组属性</a>
+4.4 <a target="_blank" href="xiaodian?action=updateGroupProduct">修改分组商品</a>
+4.5 <a target="_blank" href="xiaodian?action=getAllGroup">获取所有分组</a>
+4.6 <a target="_blank" href="xiaodian?action=getGroupById">根据分组ID获取分组信息</a>
+
+5.  货架管理接口
+5.1 <a target="_blank" href="xiaodian?action=addShelf">增加货架</a>
+5.2 <a target="_blank" href="xiaodian?action=deleteShelf">删除货架</a>
+5.3 <a target="_blank" href="xiaodian?action=updateShelf">修改货架</a>
+5.4 <a target="_blank" href="xiaodian?action=getAllShelf">获取所有货架</a>
+5.5 <a target="_blank" href="xiaodian?action=getSelfById">根据货架ID获取货架信息</a>
+
+6.  订单管理接口
+6.1 订单付款通知【见抽象接口AbstractUserOperate.onMerchantOrderPayEvent(OrderPayEventRequest orderPayEvent)事件】
+6.2 <a target="_blank" href="xiaodian?action=getOrderById">根据订单ID获取订单详情</a>
+6.3 <a target="_blank" href="xiaodian?action=getOrderByFilter">根据订单状态/创建时间获取订单详情</a>
+6.4 <a target="_blank" href="xiaodian?action=setOrderDelivery">设置订单发货信息</a>
+6.5 <a target="_blank" href="xiaodian?action=closeOrder">关闭订单</a>
+
+7.  功能接口</a>
+7.1 <a target="_blank" href="xiaodian?action=">上传图片</a> 【未测试】
+
+</pre>  
+  
+  </body>
+</html>

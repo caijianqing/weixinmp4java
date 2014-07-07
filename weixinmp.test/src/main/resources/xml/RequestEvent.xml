@@ -1,0 +1,7 @@
+<xml><ToUserName><![CDATA[caijianqing]]></ToUserName>
+<FromUserName><![CDATA[FromUser]]></FromUserName>
+<CreateTime>123456789</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[EVENT]]></Event>
+<EventKey><![CDATA[EVENTKEY]]></EventKey>
+</xml>

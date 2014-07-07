@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>微信公众平台高级API测试向导页面</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  
+  <body>
+  
+   <div>所有示例在cjc.weixinmp.test.WeixinmpTestServlet中，请自行修改调整测试。<br><br></div>
+   <div>如需启动本地测试（模拟微信服务器返回数据）：<br>
+   请在cjc.weixinmp.test.Engine.contextInitialized(ServletContextEvent sce)<br>
+   开启weixinmpController.useLocalTestServer(true);<br>
+   并在res/test/目录下创建相应的txt文件，内容为接口返回的字符窜结果样例<br>
+   </div>
+  
+  <h3>基础接口</h3>
+  <ul>
+	  <li><a target="_blank" href="test?action=getAccessToken">getAccessToken</a></li>
+  </ul>
+  
+  <h3>自定义菜单</h3>
+  <ul>
+	  <li><a target="_blank" href="test?action=menuCreate">更新菜单</a>（具体菜单名称请直接修改源码）</li>
+	  <li><a target="_blank" href="test?action=menuQuery">查询菜单</a></li>
+	  <li><a target="_blank" href="test?action=menuDelete">删除菜单</a></li>
+  </ul>
+  
+  <h3>客服消息</h3>
+  <ul>
+	  <li>
+		  <form action="test?action=sendText" method="post" target="_blank">
+		     接收用户OpenId：<input name="to" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
+		     消息内容：<input name="text" value="hello">
+		     <input type="submit" value="发送">
+		  </form>
+    </ul>
+    
+  <h3>用户管理</h3>
+  <ul>
+
+	  <li>新建分组
+		  <form action="test?action=groupCreate" method="post" target="_blank">
+		     名称：<input name="groupName" value="">
+		     <input type="submit" value="发送"><br>
+		  </form>
+      <br>
+      </li>
+      
+	  <li><a target="_blank" href="test?action=groupGet">获取分组列表</a><br><br></li>
+
+	  <li>更新分组名称
+	    <form action="test?action=groupUpdateName" method="post" target="_blank">
+		     分组ID：<input name="id" value="">
+		     新名称：<input name="name" value="">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+	  <li>移动用户到指定
+	    <form action="test?action=groupMoveUser" method="post" target="_blank">
+		     用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
+		     分组ID：<input name="groupId" value="">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+	  <li>查询用户所在分组ID
+	    <form action="test?action=groupId" method="post" target="_blank">
+		     用户OpenId：<input name="id" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+	  <li>查询用户资料
+	    <form action="test?action=userInfo" method="post" target="_blank">
+		     用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+
+  </ul>
+  
+  <h3>参数二维码</h3>
+  <ul>
+	  <li>生成临时二维码
+	    <form action="test?action=qrcodeCreate" method="post" target="_blank">
+		     <input type="hidden" name="type" value="QR_SCENE">
+		     sceneId：<input name="sceneId" value="">
+		     有效时间（秒）：<input name="expreSeconds" value="10">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+	  <li>生成永久二维码
+	    <form action="test?action=qrcodeCreate" method="post" target="_blank">
+		     <input type="hidden" name="type" value="QR_LIMIT_SCENE">
+		     sceneId：<input name="sceneId" value="">
+		     有效时间（秒）：<input name="expreSeconds" value="10">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+	  <li>拉取二维码
+	    <form action="test?action=qrcodeGet" method="post" target="_blank">
+		     <input type="hidden" name="type" value="QR_LIMIT_SCENE">
+		     ticket：<input name="ticket" value="">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+
+  </ul>
+  <h3>上传下载</h3>
+  <ul>
+	  <li>上传图片文件
+	    <form action="test?action=uploadImage" method="post" target="_blank">
+		     文件绝对路径：<input name="file" value="d:/img2.jpg">
+		     顺便发给这个用户OpenId：<input name="userId" value="o7R_hjgD2254yWvNk33Ij0tg9Kgk">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+	  
+	  <li>下载媒体文件
+	    <form action="test?action=downloadMedia" method="post" target="_blank">
+		     MediaId：<input name="mediaId" value="">
+		     本地文件名(不是路径)：<input name="filenameSuffix" value="test.jpg">
+		     <input type="submit" value="发送">
+		</form><br>
+	  </li>
+
+
+  </ul>
+  
+  </body>
+</html>

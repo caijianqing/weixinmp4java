@@ -1,0 +1,31 @@
+{
+    "errcode": 0,
+    "errmsg": "success",
+    "shelf_info": {
+        "module_infos": [
+            {
+                "eid": 5,
+                "group_infos": {
+                    "groups": [
+                        {
+                            "group_id": 200080093
+                        },
+                        {
+                            "group_id": 200080118
+                        },
+                        {
+                            "group_id": 200080119
+                        },
+                        {
+                            "group_id": 200080135
+                        }
+                    ],
+                    "img_background": "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl294FzPwnf9dAcaN7ButStztAZyy2yHY8pW6sTQKicIhAy5F0a2CqmrvDBjMFLtc2aEhAQ7uHsPow9A/0"
+                }
+            }
+        ]
+    },
+    "shelf_banner": "http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2ibp2DgDXiaic6WdflMpNdInS8qUia2BztlPu1gPlCDLZXEjia2qBdjoLiaCGUno9zbs1UyoqnaTJJGeEew/0",
+    "shelf_name": "新建货架",
+    "shelf_id": 97
+}

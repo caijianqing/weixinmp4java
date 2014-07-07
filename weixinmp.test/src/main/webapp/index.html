@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <title>微信公众平台测试工具</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="hex_sha1.js"></script>
+    <script type="text/javascript">
+    function post(){
+        var url = document.getElementById("url").value;
+        var token = document.getElementById("token").value;
+        var to = document.getElementById("to").value;
+        var from = document.getElementById("from").value;
+        var content = document.getElementById("content");
+    	var xml = " <xml>";
+    		xml += " <ToUserName><![CDATA[" + to + "]]></ToUserName>";
+    		xml += " <FromUserName><![CDATA[" + from + "]]></FromUserName> ";
+    		xml += " <CreateTime>1348831860</CreateTime>";
+    		xml += " <MsgType><![CDATA[text]]></MsgType>";
+    		xml += " <Content><![CDATA[" + content.value + "]]></Content>";
+    		xml += " <MsgId>1234567890123456</MsgId>";
+    		xml += " </xml>";
+    	// 准备URL
+    	var signature="";
+    	var timestamp = parseInt(new Date().getTime()/1000);
+    	var echostr = "hellobaby"; // 腾讯说这是随机字符窜
+    	var nonce = "kawayi"; // 也是随机数
+    	var array = new Array();
+    	array.push(token);
+    	array.push(timestamp); 
+    	array.push(nonce);
+    	array = array.sort();
+    	for ( var s in array) {
+    	    signature+=array[s];
+		}
+    	signature = hex_sha1(signature);
+    	url = url + "?signature=%signature%&echostr=%echostr%&timestamp=%timestamp%&nonce=%nonce%";
+    	url = url.replace("%signature%", signature);
+    	url = url.replace("%echostr%", echostr);
+    	url = url.replace("%timestamp%", timestamp);
+    	url = url.replace("%nonce%", nonce);
+    	
+    	// 显示发送内容
+    	insertMsg(true, (content.value ? content.value : "[空]"), "right");
+    	content.value="";
+    	// ajax请求
+        var xmlHttp = (window.XMLHttpRequest) ? (new XMLHttpRequest()) : (new ActiveXObject("Microsoft.XMLHTTP"));
+        xmlHttp.onreadystatechange = function(data){
+        	if(xmlHttp.readyState==4){
+        		var content;
+        		if(xmlHttp.status==200){
+        			var resp = xmlHttp.responseText;
+        			var i1 = resp.indexOf("<Content>"), i2 = resp.indexOf("</Content>");
+        			content = resp.substring(i1 + 9, i2);
+        		}else{
+        			content = "readyState:" + xmlHttp.readyState + " status:" + xmlHttp.status + " responseText:" + xmlHttp.responseText;
+        		}
+        		insertMsg(false, content, "left");
+        	}
+        }  
+        xmlHttp.open("post",url);
+        xmlHttp.send(xml);
+        // 焦点定位到内容输入框
+        focusContent();
+    }
+    
+    function insertMsg(isReq, content, align){
+        var list = document.getElementById("list");
+        var div = document.createElement("div");
+        div.style.margin = '10px';
+        div.style.padding = '10px';
+        div.style.display = 'none';
+        div.style.textAlign = align;
+        if(isReq){
+	        div.style.background = '#D0A8D6';
+        }else{
+	        div.style.background = '#95D01B';
+        }
+        div.innerHTML = "<i>" + new Date() + "</i><br>---------------------------------<br><pre>"+ content + "</pre>";
+        $(list).append(div);
+        $(div).slideDown(500);
+        $(list).animate({ scrollTop: 6000000 },  500); 
+    }
+    
+    function focusContent(){
+    	document.getElementById("content").focus();
+    }
+    
+    function resize(){
+    	$("#list").css("overflow", "auto").css("height", $("#list_td").css("height"));
+    }
+    
+    </script>
+  </head>
+  
+  
+  <body onLoad="focusContent();resize();" onresize="resize()">
+<table width="100%"  height="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td  valign="top"  id="list_td">
+      <div id="list" ></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="80">
+ <hr>
+<form onsubmit="return false;">
+<strong>如需修改一下默认参数，请直接修改index.html文件。
+如需打开高级接口测试向导页面<a href="test.html" target="_blank">戳这里</a>。
+小店测试样例<a href="xiaodian.html" target="_blank">戳这里</a>。
+</strong>
+<pre>
+接入地址:<input id="url" style="width:80%" value="weixinmpapi" />
+token:<input id="token" style="width:80%" value="fuckyou" />
+公众号OpenID:<input id="to" style="width:80%" value="gh_d7971c16f069" >
+用户OpenID:<input id="from" style="width:80%" value="oYWKTjm3-spNzIM7qmdkhqyq9YIg" >
+文本信息:<input id="content" style="width:80%"> <input type="submit" onClick="post()" value="发送">
+</pre>    
+</form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
