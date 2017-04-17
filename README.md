@@ -7,11 +7,11 @@
 
 最近更新
 =============
-###2014.07.07
+### 2014.07.07
    - 将代码切换为maven管理
    - 原代码保留在no_maven目录中
 
-###2014.07.06  v91
+### 2014.07.06  v91
   - 小店API 1.4完成【警告：小店代码仅在本地进行模拟测试，没有经过微信服务器测试，欢迎有条件的同学反馈BUG】
      - cjc.weixinmp包增加了7个以Merchant开头的类，分别对应API手册的7个功能接口，每个方法对应一个功能
      - 增加cjc.weixinmp.merchant.bean包，存放与小店有关实体
@@ -30,34 +30,34 @@
 
 软件包介绍
 =============
-##cjc.weixinmp
+## cjc.weixinmp
 包含事件分发、主动调用、通讯，解析json，解析xml，日志储存，读取配置文件，读取帮助文件信息等功能。
 
-##cjc.weixinmp.bean
+## cjc.weixinmp.bean
 接口通讯中涉及到的数据格式（xml或者json），已被封装为实体。
 
-##cjc.weixinmp.merchant.bean
+## cjc.weixinmp.merchant.bean
 存放与小店有关实体
 
-##cjc.weixinmp.merchant.builder
+## cjc.weixinmp.merchant.builder
 因为小店的数据实体比较复杂（很多字段很多结构），所有特设数据构造器，非常好用！
 
 配置文件
 =============
-##/weixinmp.default.properties
+## /weixinmp.default.properties
 框架基本设置，请复制一份并重命名为weixinmp.properties存放在你的src根目录下。
   - 公众号的基本信息（token、appid、appsecret等）
   - 公众平台API接口配置（各种URL）
   - 代理设置（支持通过代理上网的环境）
 
-##/weixinmp_helps.xml
+## /weixinmp_helps.xml
 帮助信息文件，请复制一份weixinmp_helps.xml存放在你的src目录下。
   - 帮助信息配置文件，由controller.getHelp(key)获得内容。
 
 接口介绍
 =============
 
-##cjc.weixinmp.AbstractUserOperate
+## cjc.weixinmp.AbstractUserOperate
 由微信服务器对你的服务器进行调用的接口称之为被动接口。
 例如：发送文本消息、语音消息、订阅事件、退订事件、点击菜单事件等。
 该接口已包含了所有开放的接口，选择需要的方法进行重写，并编写自己的业务代码即可。
@@ -107,17 +107,17 @@
         return buildTextResponse(help); 
     }
 
-##cjc.weixinmp.AbstractWeixinmpController
+## cjc.weixinmp.AbstractWeixinmpController
 这个是API的总控制器，包含主动接口和被动接口。
 这个控制器应该在Application上下文的生命周期内只创建一个实例，并接管某一个Servlet的doPost和doGet请求。
 
-####AbstractUserOperate cjc.weixinmp.test.WeixinmpController.getUserOperate(String FromUserName)
+#### AbstractUserOperate cjc.weixinmp.test.WeixinmpController.getUserOperate(String FromUserName)
 这个抽象方法为每次用户主动发送消息时调用，一般返回与用户绑定的AbstractUserOperate对象，这样保证用户会话不被串线。
 
-####void cjc.weixinmp.test.WeixinmpController.logInfo(String msg)
+#### void cjc.weixinmp.test.WeixinmpController.logInfo(String msg)
 这是框架默认的记录日志方法，你可以重写它以及其他几个日志方法，用你自己的记录方式，例如log4j。
 
-####主动接口
+#### 主动接口
 由你的服务器对微信服务器进行主动调用的接口称之为主动服务。
 例如：自定义菜单、客户消息用户管理等。
 
